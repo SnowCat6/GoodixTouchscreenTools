@@ -1,14 +1,12 @@
 package ru.vpro.android.gttools.gui.tools;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
-
 import java.util.ArrayList;
+import java.util.List;
 
 public class GoodixTools
 {
     private SuperSU su;
     private String debugFile = "/proc/gt1x_debug";
-    private String endLine = "--END--";
 
     public GoodixTools(SuperSU su)
     {
@@ -18,19 +16,13 @@ public class GoodixTools
     public ArrayList<String> readConfig()
     {
         su.exec("cat " + debugFile);
-        su.exec("echo " + endLine);
-
-        ArrayList<String> cfgLines = new ArrayList<>();
-
-        while(true) {
-            String line = su.readLine();
-            if (line == null) break;
-            if (line.equals(endLine)) break;
-            cfgLines.add(line);
-        }
 
         boolean bFound = false;
         ArrayList<String> cfg = new ArrayList<>();
+
+        List<String> cfgLines = su.readLines();
+        if (cfgLines == null) return cfg;
+
         for (String line: cfgLines) {
             if (!bFound){
                 bFound = line.contains("chip");
@@ -43,7 +35,19 @@ public class GoodixTools
         return cfg;
     }
 
-    public boolean flashConfig(String configText) {
-        return true;
+    public boolean flashConfig(String configText)
+    {
+        String tmpName = "/sdcard/tp_config.txt";
+        if (!ADB.pushContent(tmpName, configText)) return false;
+
+        boolean bOK = execCmd("sendconfig", tmpName);
+        su.exec("rm " + tmpName);
+
+        return bOK && su.exitValue() == 0;
+    }
+
+    private boolean execCmd(String cmd, String param){
+        if (!param.isEmpty()) cmd += " " + param;
+        return su.exec("echo " + cmd + "> " + debugFile);
     }
 }

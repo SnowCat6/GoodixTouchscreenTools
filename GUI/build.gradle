@@ -6,6 +6,19 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 }
 
+task deleteJar(type: Delete) {
+    delete 'libs/gtxtouchtools.jar'
+}
+
+task createJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('libs/jars/')
+    include('classes.jar')
+    rename('classes.jar', 'gtxtouchtools.jar')
+}
+
+createJar.dependsOn(deleteJar, build)
+
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
 buildscript {
