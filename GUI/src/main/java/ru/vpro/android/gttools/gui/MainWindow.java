@@ -96,6 +96,7 @@ class MainWindow extends JPanel
 
         //  Read file
         configText = "";
+        btnSaveCfg.setEnabled(false);
         setResultValue("Read config values for flash", "");
 
         File file = fileChooser.getSelectedFile();

@@ -13,6 +13,11 @@ public class GoodixTools
         this.su = su;
     }
 
+    private boolean execCmd(String cmd, String param){
+        if (!param.isEmpty()) cmd += " " + param;
+        return su.exec("echo " + cmd + "> " + debugFile);
+    }
+
     public ArrayList<String> readConfig()
     {
         su.exec("cat " + debugFile);
@@ -45,9 +50,22 @@ public class GoodixTools
 
         return bOK && su.exitValue() == 0;
     }
-
-    private boolean execCmd(String cmd, String param){
-        if (!param.isEmpty()) cmd += " " + param;
-        return su.exec("echo " + cmd + "> " + debugFile);
+    public boolean resetConfig(){
+        return execCmd("reset", "");
+    }
+    public boolean clearConfig(){
+        return execCmd("clear_config", "");
+    }
+    public boolean init(){
+        return execCmd("init", "");
+    }
+    public boolean power(boolean bPowerOn)
+    {
+        if (bPowerOn) return execCmd("poweron", "");
+        return execCmd("poweroff", "");
+    }
+    public boolean chipVersion(boolean bPowerOn)
+    {
+        return execCmd("chip", "");
     }
 }
