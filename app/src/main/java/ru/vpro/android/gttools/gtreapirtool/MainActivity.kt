@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.type = "text/rfc822"
+        intent.data = Uri.parse("mailto:")
         intent.putExtra(Intent.EXTRA_SUBJECT, "GTXX config")
         intent.putExtra(Intent.EXTRA_TEXT, configText)
 
