@@ -3,8 +3,6 @@ package ru.vpro.android.gttools.gtreapirtool.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.chainfire.libsuperuser.Shell;
-
 public class GoodixTools
 {
     private SuperSU su ;

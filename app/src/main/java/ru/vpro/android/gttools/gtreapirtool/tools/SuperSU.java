@@ -6,8 +6,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.chainfire.libsuperuser.Shell;
-
 import static java.lang.Integer.parseInt;
 
 public class SuperSU
